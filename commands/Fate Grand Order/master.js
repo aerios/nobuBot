@@ -18,8 +18,8 @@ module.exports = class FGOMasterCommand extends Command {
       let data = r[0].text.match(/id="mini(?:(?!<\/table)[\s\S])+/g)[0].match(/desc">\n.+\n.+/g).map(item => {
         return '- ' + item.slice(7).split('\n')[1].replace(/\t{2,}/g, '');;
       });
-      let data2 = r[1].text.match(/id="mini(?:(?!<\/table)[\s\S])+/g)[0].match(/desc">\n.+\n.+/g).map(item => {
-        return '- ' + item.slice(7).split('\n')[1].replace(/\t{2,}/g, '');;
+      let data2 = r[1].text.match(/id="mini(?:(?!<\/table)[\s\S])+/g)[0].match(/<td>[0-9]{1,}.+desc">.+/g).map(item => {
+        return '- ' + item.replace(/<td>.+desc">/,"").trim()
       });
       let descList = [
         {
