@@ -25,6 +25,7 @@ const parseArgs = (raw, authorId) => {
     }    
     compiledArgs.list = isListing
     let mentionID = raw.match(/(?:<@!?)?(\d+)/);
+    console.log(mentionID)
     if (mentionID) compiledArgs.player = mentionID[1];
     else compiledArgs.player = authorId
     return compiledArgs
