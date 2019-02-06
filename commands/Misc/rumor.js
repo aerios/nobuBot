@@ -11,7 +11,12 @@ module.exports = class RumorsCommand extends Command {
       "Psshh, I saw [1] holding hands with [2] while walking down the street last night!!",
       "Psshh, I saw [1] hugging [2] in the amusement park yesterday!!",
       "Psshh, I saw [1] touching [2] under nitocris's sheets the other day!",
-      "Psshh, I saw [1] having mana transfer with [2] in the school gym the other day!!"
+      "Psshh, I saw [1] having mana transfer with [2] in the school gym the other day!!",
+      "Psssh, I saw [1] having dinner together with [2] in downtown last week!",
+      "Psssh, I saw [1] giving [2] a homemade chocolate in the train station yesterday !",
+      "Nobu is apologizing to [1] and [2] for spreading bad rumors about them..",
+      "Psssh, I saw [1] and [2] discussing about their next rolls? Will they survive?",
+      "Psssh, I saw [1] caressing [2]'s hair yesterday!"
     ];
   }
 
