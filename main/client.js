@@ -24,7 +24,7 @@ module.exports = class NobuBot {
             type: 'LISTENING'
           },
           status: 'online'
-        })
+        }).catch(console.error).then(console.log)
       });
       this.client.on('disconnect', () => {
         loginTime = Date.now();
