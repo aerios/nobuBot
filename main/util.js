@@ -55,17 +55,17 @@ module.exports = class Util {
         const fields = [
           {
             name: 'Server',
-            value: num.server,
+            value: num.server | "Not provided",
             inline: true
           },
           {
             name: 'FriendID',
-            value: num.id,
+            value: num.id || "Not provided",
             inline: true
           },
           {
             name: 'IGN',
-            value: num.name
+            value: num.name || "Not provided"
           }
         ]
         memo = memo.concat(fields)
