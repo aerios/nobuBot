@@ -85,8 +85,14 @@ module.exports = class NobuBot {
           } else if (customCommand.has(args[0])) message.channel.send(customCommand.get(args[0]));
         });
       });
-      this.client.login(this.config.token).catch(console.log);
+      this
+        .client
+        .login(this.config.token)
+        .catch(e => {
+          console.log(e)
+        });
     }).catch(console.log);
+
     setInterval(function() {
       http.get("http://nobubot.herokuapp.com");
     }, 300000);    
