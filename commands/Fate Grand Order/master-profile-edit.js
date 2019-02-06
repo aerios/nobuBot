@@ -37,7 +37,7 @@ const finalizeUnsavedProfile = (unsavedProfile, profiles) => {
   const key = new ProfileKey(unsavedProfile)
   const existing = profiles[key]
   if(existing) {
-    return Object.assign(existing, unsavedSingleProfile)
+    return Object.assign(existing, unsavedProfile)
   } else return unsavedSingleProfile
 }
 
