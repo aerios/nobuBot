@@ -3,7 +3,7 @@ const Constants = require('../../main/const');
 const snek = require('snekfetch');
 
 const parseArgs = (raw, authorId) => {
-  const args = raw.match(/((?:name)|(?:id)|(?:support)|(?:privacy)|(?:server)) ?: ?[^\|]+/gi);
+  const args = raw.match(/((?:name)|(?:id)|(?:support)|(?:privacy)|(?:server)|(?:list)) ?: ?[^\|]+/gi);
   let compiledArgs = {}
   if (args) {
     args.forEach(item => {
