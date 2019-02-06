@@ -56,6 +56,7 @@ module.exports = class FGOProfileCommand extends Command {
   }
   run(message, args, prefix) {
     let player = message.author.id;
+    console.log(args)
     const compiledArgs = parseArgs(args.join(" "), player)
     console.log("Compiled args", compiledArgs)
     if(compiledArgs) {
