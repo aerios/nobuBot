@@ -18,7 +18,7 @@ module.exports = class NobuBot {
       this.client.on('ready', () => {
         this.dashboard = new Dashboard(this);
         console.log(`Logged in! Time taken: ${Date.now() - loginTime}ms`);
-        this.client.setPresence({
+        this.client.user.setPresence({
           game: {
             name: 'your commands',
             type: 'LISTENING'
