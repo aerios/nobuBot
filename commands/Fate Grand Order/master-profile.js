@@ -10,17 +10,19 @@ const parseArgs = (raw, authorId) => {
     isListing = true
   }
   if (args || isListing) {
-    args.forEach(item => {
-      item = item.split(':');
-      item[0] = item[0].toLowerCase().trim();
-      item[1] = item.slice(1).join(':').replace(/<@[0-9]{1,}>/ig, "").trim();
-      if(item[0] == 'list') {
-        compiledArgs.list = true
-      } else {
-        compiledArgs[item[0]] = item[1]
-      }
-      
-    });
+    if(args) {
+      args.forEach(item => {
+        item = item.split(':');
+        item[0] = item[0].toLowerCase().trim();
+        item[1] = item.slice(1).join(':').replace(/<@[0-9]{1,}>/ig, "").trim();
+        if(item[0] == 'list') {
+          compiledArgs.list = true
+        } else {
+          compiledArgs[item[0]] = item[1]
+        }
+        
+      });
+    }    
     compiledArgs.list = isListing
     let mentionID = raw.match(/(?:<@!?)?(\d+)/);
     if (mentionID) compiledArgs.player = mentionID[1];
