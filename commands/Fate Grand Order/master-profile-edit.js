@@ -121,7 +121,6 @@ module.exports = class FGOProfileEditCommand extends Command {
             item[0] = item[0].toLowerCase().trim();
             item[1] = item.slice(1).join(':').trim();
             unsavedSingleProfile[item[0]] = item[1];
-            modified = true;
             if (item[0] == "privacy") {
               if (item[1] == "false") unsavedSingleProfile.privacy = false;
               else unsavedSingleProfile.privacy = true;
@@ -147,7 +146,7 @@ module.exports = class FGOProfileEditCommand extends Command {
         }
       });
     } else {
-      message.channel.send(`Error: No argument provided. Please consult \`${prefix}help profile-edit\` for more information.`);
+      message.channel.send(`Error: No argument provided. Please consult \`${prefix}help master-profile-edit\` for more information.`);
     }
   }
 }
