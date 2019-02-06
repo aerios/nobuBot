@@ -48,10 +48,42 @@ module.exports = class Util {
       });
     });
   }
+  fgoProfileList(user, dataList) {
+    let embed = {
+      title: "FGO Profile List for " + user.username,
+      fields: dataList.reduce((memo, num) => {
+        const fields = [
+          {
+            name: 'Server',
+            value: num.server,
+            inline: true
+          },
+          {
+            name: 'FriendID',
+            value: num.id,
+            inline: true
+          },
+          {
+            name: 'IGN',
+            value: num.name
+          }
+        ]
+        memo = memo.concat(fields)
+        return memo
+      }, []),
+      description: "\u200b",
+      thumbnail: { url: user.displayAvatarURL }
+    }
+    return embed;  
+  }
   fgoProfile(user, data) {
     let embed = {
       title: "FGO Profile for " + user.username,
       fields: [
+        {
+          name: "Server",
+          value: data.server || "Not Provided"
+        },
         {
           name: "IGN",
           value: data.name || "Not Provided"
@@ -59,7 +91,8 @@ module.exports = class Util {
         {
           name: "Friend ID",
           value: data.id || "Not Provided"
-        }
+        },
+        
       ],
       description: "\u200b",
       thumbnail: { url: user.displayAvatarURL }
