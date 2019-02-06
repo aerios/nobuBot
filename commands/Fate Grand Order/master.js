@@ -18,8 +18,22 @@ module.exports = class FGOMasterCommand extends Command {
       let data = r[0].text.match(/id="mini(?:(?!<\/table)[\s\S])+/g)[0].match(/desc">\n.+\n.+/g).map(item => {
         return '- ' + item.slice(7).split('\n')[1].replace(/\t{2,}/g, '');;
       });
+      let data2 = r[1].text.match(/id="mini(?:(?!<\/table)[\s\S])+/g)[0].match(/desc">\n.+\n.+/g).map(item => {
+        return '- ' + item.slice(7).split('\n')[1].replace(/\t{2,}/g, '');;
+      });
+      let descList = [
+        {
+          name: 'Description for JP:',
+          value: data.join('\n') + "\n\u200b"
+        },
+        {
+          name: 'Description for NA:',
+          value: data2.join('\n') + "\n\u200b"
+        }
+      ]
       let fields = [];
       r.forEach((i, ind) => {
+        fields.push(descList[ind]);
         i = i.text.match(/id="recommended(?:(?!id="other)[\s\S])+/g)[0];
         i.split('<spanh>').slice(1).forEach(rec => {
           let name = `Recommended Area ${ind ? '(EN)' : '(JP)'}: ${ rec.match(/<\/font>[^<]+<font/)[0].slice(8, -6) }`;
@@ -32,11 +46,8 @@ module.exports = class FGOMasterCommand extends Command {
           fields.push( { name, value } );
         })
       });
-      fields.unshift({
-        name: "Translation for JP:",
-        value: data.join('\n') + "\n\u200b"
-      });
-      fields[fields.length - 1].value = fields[fields.length - 1].value.slice(0, -2);
+      
+      // fields[fields.length - 1].value = fields[fields.length - 1].value.slice(0, -2);
       message.channel.send('', { embed: {
         title: "Master Mission for this week",
         fields
