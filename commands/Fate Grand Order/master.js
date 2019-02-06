@@ -20,7 +20,7 @@ module.exports = class FGOMasterCommand extends Command {
       });
       let fields = [];
       r.forEach((i, ind) => {
-        i = i.text.match(/id="recommended_current(?:(?!id="other)[\s\S])+/g)[0];
+        i = i.text.match(/id="recommended(?:(?!id="other)[\s\S])+/g)[0];
         i.split('<spanh>').slice(1).forEach(rec => {
           let name = `Recommended Area ${ind ? '(EN)' : '(JP)'}: ${ rec.match(/<\/font>[^<]+<font/)[0].slice(8, -6) }`;
           let value = [];
