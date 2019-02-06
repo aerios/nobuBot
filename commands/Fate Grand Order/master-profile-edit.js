@@ -51,7 +51,7 @@ const validateProfileInput = (prefix, profile) => {
     
     let messages = []
     if(!id) {
-      messages.push(`IGN is required`)
+      messages.push(`FriendID is required`)
     }
     if(!server) {
       messages.push(`Server is required`)
