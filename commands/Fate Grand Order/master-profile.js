@@ -89,7 +89,7 @@ module.exports = class FGOProfileCommand extends Command {
               })
             } else if(server && name) {
               selectedProfiles = profiles.filter(item => {
-                return item.server.toLowerCase() == server.toLowerCase() && item.name.toLowerCase().indexOf(name.toLowerCase) >= 0
+                return item.server.toLowerCase() == server.toLowerCase() && item.name.toLowerCase().indexOf(name.toLowerCase()) >= 0
               })    
             } else {
               selectedProfiles = profiles
