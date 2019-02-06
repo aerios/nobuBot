@@ -55,7 +55,7 @@ module.exports = class Util {
         const fields = [
           {
             name: 'Server',
-            value: num.server | "Not provided",
+            value: num.server || "Not provided",
             inline: true
           },
           {
