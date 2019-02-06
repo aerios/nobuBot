@@ -3,13 +3,17 @@ const Constants = require('../../main/const');
 const snek = require('snekfetch');
 
 const parseArgs = (raw, authorId) => {
-  const args = raw.match(/((?:name)|(?:id)|(?:support)|(?:privacy)|(?:server)|(?:list)) ?: ?[^\|]+/gi);
+  const args = raw.match(/((?:name)|(?:id)|(?:server)) ?: ?[^\|]+/gi);
   let compiledArgs = {}
-  if (args) {
+  let isListing = false
+  if(raw.toLowerCase().indexOf("list") == 0) {
+    isListing = true
+  }
+  if (args || isListing) {
     args.forEach(item => {
       item = item.split(':');
       item[0] = item[0].toLowerCase().trim();
-      item[1] = item.slice(1).join(':').trim();
+      item[1] = item.slice(1).join(':').replace(/<@[0-9]{1,}>/ig, "").trim();
       if(item[0] == 'list') {
         compiledArgs.list = true
       } else {
@@ -17,6 +21,7 @@ const parseArgs = (raw, authorId) => {
       }
       
     });
+    compiledArgs.list = isListing
     let mentionID = raw.match(/(?:<@!?)?(\d+)/);
     if (mentionID) compiledArgs.player = mentionID[1];
     else compiledArgs.player = authorId
