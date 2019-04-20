@@ -162,7 +162,7 @@ module.exports = class AlarmSetCommand extends Command {
         const alarmInstance = new Alarm(guildId, channelId, server, hour, tz)      
         const alarmKey = `$alarmSet_${alarmInstance.toString()}`
         json[alarmKey] = alarmInstance.serialize()
-        this.main.db.set(alarmKey, JSON.stringify(json)).then(result => {
+        this.main.db.set(alarmSuperKey, JSON.stringify(json)).then(result => {
           message.channel.send(`Alarm for server: ${server} on every ${hour} o'clock using ${tz} timezone is up! Next alarm will be fired in ${(alarmInstance.nextAlarmOffset() / 60).toFixed(2)} minutes!`);
           console.log(`
             Begin run alarm!
