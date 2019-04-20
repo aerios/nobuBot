@@ -133,17 +133,20 @@ module.exports = class AlarmSetCommand extends Command {
       help: "Search for servants with a specific alignment"
     })
     this.arguments = new Arguments(/((?:server)|(?:hour)|(?:tz)) ?: ?[^\|]+/gi)
-    this.main.db.get(alarmSuperKey).then(json => {
-      if(json) {
-        json = JSON.parse(json)
-        console.log("Saved alarms", json)
-        Object.keys(json).forEach(name => {
-          const instance = Alarm.deserialize(json[name])
-          console.log("Begin running saved alarms!", this.main.client.guilds)
-          runAlarm(instance, this.main.client.guilds.get(instance.guildId))
-        })
-      }  
-    })
+    setTimeout(() => {
+      this.main.db.get(alarmSuperKey).then(json => {
+        if(json) {
+          json = JSON.parse(json)
+          console.log("Saved alarms", json)
+          Object.keys(json).forEach(name => {
+            const instance = Alarm.deserialize(json[name])
+            console.log("Begin running saved alarms!", this.main.client.guilds)
+            runAlarm(instance, this.main.client.guilds.get(instance.guildId))
+          })
+        }  
+      })
+    }, 1000)
+    
   }
 
   run(message, args, prefix) {
