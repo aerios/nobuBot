@@ -62,10 +62,10 @@ class AlarmWithChannel {
   start() {
     //calculate delta between now until next alarm
     const timezoneOffset = this.alarm.getTimezoneOffset()
-    const now = moment().zone(timezoneOffset)    
+    const now = moment().utcOffset(timezoneOffset)    
     const hour = this.alarm.hour          
     const nextAlarm = now.startOf('day').add(hour, 'h')
-    const delta = nextAlarm.unix() - beginningOfDay.unix()
+    const delta = nextAlarm.unix() - now.unix()
     let nextTimeout = 0
     if(delta < 0) {
       //we are past today's alarm. move to tomorrow    
