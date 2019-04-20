@@ -6,14 +6,16 @@ module.exports = class Arguments {
 
     parse(str) {
         const parsed = str.match(this.regex);
-        console.log("Parsing", str, parsed, this.regex)
         const obj = {}
-        parsed.forEach(item => {
-            item = item.split(':');
-            item[0] = item[0].toLowerCase().trim();
-            item[1] = item.slice(1).join(':').trim();
-            obj[item[0]] = item[1];
-        });    
-        return obj
+        if(!parsed) return obj
+        else {
+            parsed.forEach(item => {
+                item = item.split(':');
+                item[0] = item[0].toLowerCase().trim();
+                item[1] = item.slice(1).join(':').trim();
+                obj[item[0]] = item[1];
+            });    
+            return obj
+        }        
     }
 }
