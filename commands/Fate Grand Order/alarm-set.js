@@ -75,7 +75,12 @@ class AlarmWithChannel {
       //we are before today's alarm. set schedule unitl today's alarm
       nextTimeout = delta  
     }
-    console.log("Delta", delta, "nextTimeout", nextTimeout)
+    console.log(`
+      Delta       : ${delta}
+      nexTimeout  : ${nextTimeout}
+      now         : ${now.unix()}
+      nextAlarm   : ${nextAlarm.unix()}
+    `)
     console.log(`Next alarm for server ${this.alarm.server} with timezone ${this.alarm.timezone} will be fired in ${nextTimeout / 60} minutes!`)    
     this.timeoutId = setTimeout(() => {
       //this.channel.send(`@everyone this is a reminder for daily login for server ${this.alarm.server}!`)
