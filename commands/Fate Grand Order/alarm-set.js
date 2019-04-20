@@ -64,7 +64,7 @@ class AlarmWithChannel {
     const timezoneOffset = this.alarm.getTimezoneOffset()
     const now = moment().utcOffset(timezoneOffset)    
     const hour = this.alarm.hour          
-    const nextAlarm = now.startOf('day').add(hour, 'h')
+    const nextAlarm = now.clone().startOf('day').add(hour, 'h')
     const delta = nextAlarm.unix() - now.unix()
     let nextTimeout = 0
     
