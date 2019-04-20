@@ -82,9 +82,16 @@ class AlarmWithChannel {
   
 
   start() {
-    //calculate delta between now until next alarm
+    
     const nextTimeout = this.alarm.nextAlarmOffset()
-    console.log(`Next alarm for server ${this.alarm.server} with timezone ${this.alarm.timezone} will be fired in ${nextTimeout / 60} minutes!`)    
+    console.log(`
+      Next alarm set!
+      server    : ${this.alarm.server} 
+      timezone  : ${this.alarm.timezone} 
+      Guild Id  : ${this.alarm.guildId}
+      Channel Id: ${this.alarm.channelId}
+      Next alarm: ${nextTimeout / 60} minutes!`)  
+
     this.timeoutId = setTimeout(() => {
       this.channel.send(`@everyone this is a reminder for daily login for server ${this.alarm.server}!`)
       this.start()
@@ -140,7 +147,7 @@ module.exports = class AlarmSetCommand extends Command {
           console.log("Saved alarms", json)
           Object.keys(json).forEach(name => {
             const instance = Alarm.deserialize(json[name])
-            console.log("Begin running saved alarms!", this.main.client.guilds)
+            console.log("Begin running saved alarms!")
             runAlarm(instance, this.main.client.guilds.get(instance.guildId))
           })
         }  
