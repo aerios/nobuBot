@@ -123,7 +123,6 @@ module.exports = class AlarmSetCommand extends Command {
     this.arguments = new Arguments(/((?:server)|(?:hour)|(?:tz)) ?: ?[^\|]+/gi)
   }
   run(message, args, prefix) {
-    console.log("Channel", message.channel)
     const parsedArgs = this.arguments.parse(args.join(" "))
     const guildId = message.guild.id
     const channelId = message.channel.id
@@ -138,7 +137,7 @@ module.exports = class AlarmSetCommand extends Command {
     if(errMessage) {
       message.channel.send(`Error: ${errMessage}`)    
     } else {
-      const alarmInstance = new Alarm(guildId, channelId, server, hour, timezone)
+      const alarmInstance = new Alarm(guildId, channelId, server, hour, tz)
       
       const alarmKey = `$alarmSet_${alarmInstance.toString()}`
       this.main.db.set(alarmKey, JSON.stringify(alarmInstance.serialize())).then(result => {
