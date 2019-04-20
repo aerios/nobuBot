@@ -67,6 +67,7 @@ class AlarmWithChannel {
     const nextAlarm = now.startOf('day').add(hour, 'h')
     const delta = nextAlarm.unix() - now.unix()
     let nextTimeout = 0
+    
     if(delta < 0) {
       //we are past today's alarm. move to tomorrow    
       nextTimeout = 24 * 60 * 60 - delta
@@ -74,9 +75,10 @@ class AlarmWithChannel {
       //we are before today's alarm. set schedule unitl today's alarm
       nextTimeout = delta  
     }
+    console.log("Delta", delta, "nextTimeout", nextTimeout)
     console.log(`Next alarm for server ${this.alarm.server} with timezone ${this.alarm.timezone} will be fired in ${nextTimeout / 60} minutes!`)    
     this.timeoutId = setTimeout(() => {
-      this.channel.send(`@everyone this is a reminder for daily login for server ${this.alarm.server}!`)
+      //this.channel.send(`@everyone this is a reminder for daily login for server ${this.alarm.server}!`)
       this.start()
     }, nextTimeout * 1000)
   }
