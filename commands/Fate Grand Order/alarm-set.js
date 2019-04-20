@@ -139,7 +139,7 @@ module.exports = class AlarmSetCommand extends Command {
         console.log("Saved alarms", json)
         Object.keys(json).forEach(name => {
           const instance = Alarm.deserialize(json[name])
-          console.log("Begin running saved alarms!")
+          console.log("Begin running saved alarms!", this.main.client.guilds)
           runAlarm(instance, this.main.client.guilds.get(instance.guildId))
         })
       }  
