@@ -45,9 +45,11 @@ class Alarm {
     if(delta < 0) {
       //we are past today's alarm. move to tomorrow    
       nextTimeout = 24 * 60 * 60 - delta
-    } else if(delta >= 0) {
+    } else if(delta > 0) {
       //we are before today's alarm. set schedule unitl today's alarm
       nextTimeout = delta  
+    } else {
+      nextTimeout = 24 * 60 * 60
     }
     console.log(`
       Delta       : ${delta}
@@ -90,7 +92,7 @@ class AlarmWithChannel {
     const nextTimeout = this.alarm.nextAlarmOffset()
     console.log(`Next alarm for server ${this.alarm.server} with timezone ${this.alarm.timezone} will be fired in ${nextTimeout / 60} minutes!`)    
     this.timeoutId = setTimeout(() => {
-      //this.channel.send(`@everyone this is a reminder for daily login for server ${this.alarm.server}!`)
+      this.channel.send(`@everyone this is a reminder for daily login for server ${this.alarm.server}!`)
       this.start()
     }, nextTimeout * 1000)
   }
@@ -100,7 +102,6 @@ class AlarmWithChannel {
 const AlarmBucket = {}
 
 function runAlarm(alarm, guild) {
-  console.log("Run alarm", alarm, guild)
   const key = alarm.toString()
   const selectedChannel = guild.channels.get(alarm.channelId)
   const alarmWithChannel = new AlarmWithChannel(alarm, selectedChannel)
