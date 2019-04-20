@@ -33,6 +33,30 @@ class Alarm {
   toString() {
     return `${this.guildId}_${this.channelId}_${this.server}`
   }
+
+  nextAlarmOffset() {
+    const timezoneOffset = this.getTimezoneOffset()
+    const now = moment().utcOffset(timezoneOffset)    
+    const hour = this.hour          
+    const nextAlarm = now.clone().startOf('day').add(hour, 'h')
+    const delta = nextAlarm.unix() - now.unix()
+    let nextTimeout = 0
+    
+    if(delta < 0) {
+      //we are past today's alarm. move to tomorrow    
+      nextTimeout = 24 * 60 * 60 - delta
+    } else if(delta >= 0) {
+      //we are before today's alarm. set schedule unitl today's alarm
+      nextTimeout = delta  
+    }
+    console.log(`
+      Delta       : ${delta}
+      nexTimeout  : ${nextTimeout}
+      now         : ${now.unix()}
+      nextAlarm   : ${nextAlarm.unix()}
+    `)
+    return nextTimeout  
+  }
 }
 
 Alarm.deserialize = (obj) => {
@@ -59,28 +83,11 @@ class AlarmWithChannel {
     }
   }
 
+  
+
   start() {
     //calculate delta between now until next alarm
-    const timezoneOffset = this.alarm.getTimezoneOffset()
-    const now = moment().utcOffset(timezoneOffset)    
-    const hour = this.alarm.hour          
-    const nextAlarm = now.clone().startOf('day').add(hour, 'h')
-    const delta = nextAlarm.unix() - now.unix()
-    let nextTimeout = 0
-    
-    if(delta < 0) {
-      //we are past today's alarm. move to tomorrow    
-      nextTimeout = 24 * 60 * 60 - delta
-    } else if(delta >= 0) {
-      //we are before today's alarm. set schedule unitl today's alarm
-      nextTimeout = delta  
-    }
-    console.log(`
-      Delta       : ${delta}
-      nexTimeout  : ${nextTimeout}
-      now         : ${now.unix()}
-      nextAlarm   : ${nextAlarm.unix()}
-    `)
+    const nextTimeout = this.alarm.nextAlarmOffset()
     console.log(`Next alarm for server ${this.alarm.server} with timezone ${this.alarm.timezone} will be fired in ${nextTimeout / 60} minutes!`)    
     this.timeoutId = setTimeout(() => {
       //this.channel.send(`@everyone this is a reminder for daily login for server ${this.alarm.server}!`)
@@ -149,7 +156,7 @@ module.exports = class AlarmSetCommand extends Command {
       
       const alarmKey = `$alarmSet_${alarmInstance.toString()}`
       this.main.db.set(alarmKey, JSON.stringify(alarmInstance.serialize())).then(result => {
-        message.channel.send(`Alarm for server: ${server} on every ${hour} o'clock using ${tz} timezone is up!`);
+        message.channel.send(`Alarm for server: ${server} on every ${hour} o'clock using ${tz} timezone is up! Next alarm will be fired in ${alarmInstance.nextAlarmOffset() / 60} minutes!`);
         console.log(`
           Begin run alarm!
           Guild       : ${guildId}
@@ -158,7 +165,7 @@ module.exports = class AlarmSetCommand extends Command {
           Hour        : ${hour}
           Timezone    : ${tz}
           Is available: ${this.main.client.guilds.get(guildId).available}
-        `, this.main.client.guilds.get(guildId))
+        `)
         runAlarm(alarmInstance, this.main.client.guilds.get(guildId))
       })  
     }   
