@@ -50,13 +50,7 @@ class Alarm {
       nextTimeout = delta  
     } else {
       nextTimeout = 24 * 60 * 60
-    }
-    console.log(`
-      Delta       : ${delta}
-      nexTimeout  : ${nextTimeout}
-      now         : ${now.unix()}
-      nextAlarm   : ${nextAlarm.unix()}
-    `)
+    }    
     return nextTimeout  
   }
 }
@@ -115,6 +109,8 @@ function runAlarm(alarm, guild) {
   alarmWithChannel.start()
 }
 
+const alarmSuperKey = '$alarmSet'
+
 module.exports = class AlarmSetCommand extends Command {
   constructor(main) {
     super(main, {
@@ -137,7 +133,14 @@ module.exports = class AlarmSetCommand extends Command {
       help: "Search for servants with a specific alignment"
     })
     this.arguments = new Arguments(/((?:server)|(?:hour)|(?:tz)) ?: ?[^\|]+/gi)
+    this.main.db.get(alarmSuperKey).then(json => {
+      if(json) {
+        json = JSON.parse(json)
+        console.log("Saved alarms", json)
+      }  
+    })
   }
+
   run(message, args, prefix) {
     const parsedArgs = this.arguments.parse(args.join(" "))
     const guildId = message.guild.id
@@ -153,22 +156,26 @@ module.exports = class AlarmSetCommand extends Command {
     if(errMessage) {
       message.channel.send(`Error: ${errMessage}`)    
     } else {
-      const alarmInstance = new Alarm(guildId, channelId, server, hour, tz)
-      
-      const alarmKey = `$alarmSet_${alarmInstance.toString()}`
-      this.main.db.set(alarmKey, JSON.stringify(alarmInstance.serialize())).then(result => {
-        message.channel.send(`Alarm for server: ${server} on every ${hour} o'clock using ${tz} timezone is up! Next alarm will be fired in ${(alarmInstance.nextAlarmOffset() / 60).toFixed(2)} minutes!`);
-        console.log(`
-          Begin run alarm!
-          Guild       : ${guildId}
-          Channel     : ${channelId}
-          Server      : ${server}
-          Hour        : ${hour}
-          Timezone    : ${tz}
-          Is available: ${this.main.client.guilds.get(guildId).available}
-        `)
-        runAlarm(alarmInstance, this.main.client.guilds.get(guildId))
-      })  
+      this.main.db.get(alarmSuperKey).then(json => {
+        if(!json) json = {}
+        else json = JSON.parse(json)
+        const alarmInstance = new Alarm(guildId, channelId, server, hour, tz)      
+        const alarmKey = `$alarmSet_${alarmInstance.toString()}`
+        json[alarmKey] = alarmInstance.serialize()
+        this.main.db.set(alarmKey, JSON.stringify(json)).then(result => {
+          message.channel.send(`Alarm for server: ${server} on every ${hour} o'clock using ${tz} timezone is up! Next alarm will be fired in ${(alarmInstance.nextAlarmOffset() / 60).toFixed(2)} minutes!`);
+          console.log(`
+            Begin run alarm!
+            Guild       : ${guildId}
+            Channel     : ${channelId}
+            Server      : ${server}
+            Hour        : ${hour}
+            Timezone    : ${tz}
+            Is available: ${this.main.client.guilds.get(guildId).available}
+          `)
+          runAlarm(alarmInstance, this.main.client.guilds.get(guildId))
+        })
+      })        
     }   
   }
 }
