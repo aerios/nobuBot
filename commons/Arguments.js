@@ -6,6 +6,7 @@ module.exports = class Arguments {
 
     parse(str) {
         const parsed = str.match(this.regex);
+        console.log("Parsing", str, parsed, this.regex)
         const obj = {}
         parsed.forEach(item => {
             item = item.split(':');
