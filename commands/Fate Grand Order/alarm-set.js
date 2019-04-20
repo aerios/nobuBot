@@ -85,9 +85,10 @@ class AlarmWithChannel {
 
 const AlarmBucket = {}
 
-function runAlarm(alarm, channels) {
+function runAlarm(alarm, guild) {
+  console.log("Run alarm", alarm, guild)
   const key = alarm.toString()
-  const selectedChannel = channels.get(alarm.channelId)
+  const selectedChannel = guild.channels.get(alarm.channelId)
   const alarmWithChannel = new AlarmWithChannel(alarm, selectedChannel)
   if(AlarmBucket[key]) {
     //stop alarm
