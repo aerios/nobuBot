@@ -144,12 +144,12 @@ module.exports = class AlarmSetCommand extends Command {
         message.channel.send(`Alarm for server: ${server} on every ${hour} o'clock using ${tz} timezone is up!`);
         console.log(`
           Begin run alarm!
-          Guild   : ${guildId}
-          Channel : ${channelId}
-          Server  : ${server}
-          Hour    : ${hour}
-          Timezone: ${tz}
-          Guild instance: ${this.main.client.guilds.get(guildId)}
+          Guild       : ${guildId}
+          Channel     : ${channelId}
+          Server      : ${server}
+          Hour        : ${hour}
+          Timezone    : ${tz}
+          Is available: ${this.main.client.guilds.get(guildId).available}
         `)
         runAlarm(alarmInstance, this.main.client.guilds.get(guildId))
       })  
