@@ -150,7 +150,7 @@ module.exports = class AlarmSetCommand extends Command {
           Hour        : ${hour}
           Timezone    : ${tz}
           Is available: ${this.main.client.guilds.get(guildId).available}
-        `)
+        `, this.main.client.guilds.get(guildId))
         runAlarm(alarmInstance, this.main.client.guilds.get(guildId))
       })  
     }   
