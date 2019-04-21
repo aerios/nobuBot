@@ -26,7 +26,7 @@ class Alarm {
   getTimezoneOffset() {
     if(this.timezone == 'pst') return -8 * 60
     else if (this.timezone == 'jst') return 9 * 60
-    else if (this.timezone == 'pdt') return -9 * 60
+    else if (this.timezone == 'pdt') return -7 * 60
     else return 0
   }
 
