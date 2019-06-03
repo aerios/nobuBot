@@ -4,6 +4,13 @@ const Constants = require('../../main/const');
 const moment = require('moment')
 const Arguments = require("../../commons/Arguments")
 
+function getTimezoneOffset(name) {
+  if(name == 'pst') return -8 * 60
+  else if (name == 'jst') return 9 * 60
+  else if (name == 'pdt') return -7 * 60
+  else return 0
+}
+
 class Alarm {
   constructor(guildId, channelId, server, hour, timezone) {
     this.guildId = guildId
@@ -23,12 +30,7 @@ class Alarm {
     }
   }
 
-  getTimezoneOffset() {
-    if(this.timezone == 'pst') return -8 * 60
-    else if (this.timezone == 'jst') return 9 * 60
-    else if (this.timezone == 'pdt') return -7 * 60
-    else return 0
-  }
+  getTimezoneOffset() { return getTimezoneOffset(this.timezone) }
 
   toString() {
     return `${this.guildId}_${this.channelId}_${this.server}`
@@ -97,10 +99,10 @@ class AlarmWithChannel {
     this.timeoutId = setTimeout(() => {
       this.channel.send(`        
         Uwahahahahaha !!! 
-        What a Splendid Day for Chaldea ! It’s time to do head counts! 
-        What!! You didn’t log in ${this.alarm.server} server yet ?! 
-        Hey Retainer what are you waiting for? Iku zo! washi ni tsudzuke ~ei! 
-        @everyone
+      What a Splendid Day for Chaldea ! It’s time to do head counts! 
+      What!! You didn’t log in ${this.alarm.server} server yet ?! 
+      Hey Retainer what are you waiting for? Iku zo! washi ni tsudzuke ~ei! 
+      @everyone
       `, {
         file: {
           attachment: 'https://i.imgur.com/zMdqYHdh.jpg',
@@ -157,7 +159,6 @@ module.exports = class AlarmSetCommand extends Command {
       this.main.db.get(alarmSuperKey).then(json => {
         if(json) {
           json = JSON.parse(json)
-          console.log("Saved alarms", json)
           Object.keys(json).forEach(name => {
             const instance = Alarm.deserialize(json[name])
             console.log("Begin running saved alarms!")
@@ -178,6 +179,15 @@ module.exports = class AlarmSetCommand extends Command {
     if(!server) { errMessage = 'No server defined! Please specify the server' }
     else if(!hour) { errMessage = 'No hour defined! Please specify the hour'}
     else if(!tz) { errMessage = 'No timezone defined! Please specify the timezone'}
+    else if(hour == 'now') {
+      const now = moment()
+      const hour = now.hour()
+      const offset = getTimezoneOffset(tz)
+      const next5Seconds = now.add(5, 'second')
+      const hourOfn5s = next5Seconds.hour()
+      const minOfn5s = next5Seconds.minute()
+      hour = hourOfn5s + (minOfn5s / 60) + (offset / 60)
+    }
     else if(isNaN(parseInt(hour, 10))) { errMessage = `${hour} is not a valid number!`}
     else if(hour < 0 || hour > 23) { errMessage = `${hour} must be between 0 and 23!`}
     else errMessage = ''
