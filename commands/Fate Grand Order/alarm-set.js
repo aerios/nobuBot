@@ -182,7 +182,6 @@ module.exports = class AlarmSetCommand extends Command {
     else if(!tz) { errMessage = 'No timezone defined! Please specify the timezone'}
     else if(hour == 'now') {
       const now = moment()
-      const hour = now.hour()
       const offset = getTimezoneOffset(tz)
       const next5Seconds = now.add(5, 'second')
       const hourOfn5s = next5Seconds.hour()
