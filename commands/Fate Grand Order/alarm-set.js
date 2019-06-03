@@ -152,7 +152,7 @@ module.exports = class AlarmSetCommand extends Command {
           })
         }  
       })
-    }, 1000)
+    }, 10000)
     
   }
 
