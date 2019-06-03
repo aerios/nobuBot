@@ -86,11 +86,13 @@ class AlarmWithChannel {
     const nextTimeout = this.alarm.nextAlarmOffset()
     console.log(`
       Next alarm set!
-      server    : ${this.alarm.server} 
-      timezone  : ${this.alarm.timezone} 
-      Guild Id  : ${this.alarm.guildId}
-      Channel Id: ${this.alarm.channelId}
-      Next alarm: ${nextTimeout / 60} minutes!`)  
+      server      : ${this.alarm.server} 
+      timezone    : ${this.alarm.timezone} 
+      Guild Id    : ${this.alarm.guildId}
+      Channel Id  : ${this.alarm.channelId}
+      Guild name  : ${this.channel.guild.name}
+      Channel name: ${this.channel.name}
+      Next alarm  : ${nextTimeout / 60} minutes!`)  
 
     this.timeoutId = setTimeout(() => {
       this.channel.send(`@everyone this is a reminder for daily login for server ${this.alarm.server}!`)
