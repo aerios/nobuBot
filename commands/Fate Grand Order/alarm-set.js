@@ -186,8 +186,8 @@ module.exports = class AlarmSetCommand extends Command {
       const next5Seconds = now.add(5, 'second')
       const hourOfn5s = next5Seconds.hour()
       const secOfn5s = next5Seconds.second()
-      console.log(hourOfn5s, (secOfn5s / 60), (offset / 60))
-      hour = (hourOfn5s + (secOfn5s / 3600) + (offset / 60)).toFixed(1)
+      console.log(hourOfn5s, (secOfn5s / 3600), (offset / 60))
+      hour = (hourOfn5s + (secOfn5s / 3600) + (offset / 60))
     }
     else if(isNaN(parseInt(hour, 10))) { errMessage = `${hour} is not a valid number!`}
     else if(hour < 0 || hour > 23) { errMessage = `${hour} must be between 0 and 23!`}
