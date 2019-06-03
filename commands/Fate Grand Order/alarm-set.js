@@ -97,13 +97,7 @@ class AlarmWithChannel {
       Next alarm  : ${nextTimeout / 60} minutes!`)  
 
     this.timeoutId = setTimeout(() => {
-      this.channel.send(`        
-        Uwahahahahaha !!! 
-      What a Splendid Day for Chaldea ! It’s time to do head counts! 
-      What!! You didn’t log in ${this.alarm.server} server yet ?! 
-      Hey Retainer what are you waiting for? Iku zo! washi ni tsudzuke ~ei! 
-      @everyone
-      `, {
+      this.channel.send(`Uwahahahahaha !!!\nWhat a Splendid Day for Chaldea ! It’s time to do head counts\nWhat!! You didn’t log in ${this.alarm.server} server yet ?!\nHey Retainer what are you waiting for? Iku zo! washi ni tsudzuke ~ei!\n@everyone`, {
         file: {
           attachment: 'https://i.imgur.com/zMdqYHdh.jpg',
           name: 'nobu.png'
