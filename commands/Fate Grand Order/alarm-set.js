@@ -83,7 +83,6 @@ class AlarmWithChannel {
     this.channel = activeChannel   
     this.timeoutId = -1 
     this.nobuBuffer = nobuBuffer
-    console.log('Received nobu buffer', this.nobuBuffer)
   }
 
   stop() {
@@ -106,7 +105,6 @@ class AlarmWithChannel {
     Guild name  : ${this.channel.guild.name}
     Channel name: ${this.channel.name}
     Next alarm  : ${nextTimeout / 60} minutes!
-    Buffer      : ${this.nobuBuffer}
     `
     )  
     this.timeoutId = setTimeout(() => {
@@ -200,7 +198,6 @@ module.exports = class AlarmSetCommand extends Command {
       const secOfn5s = next5Seconds.second()
       const minOfn5s = next5Seconds.minute()
       const hourFraction = secOfn5s / 3600 + minOfn5s / 60
-      console.log(hourOfn5s, (hourFraction), (offset / 60))
       hour = (hourOfn5s + (hourFraction) + (offset / 60))
     }
     else if(isNaN(parseInt(hour, 10))) { errMessage = `${hour} is not a valid number!`}
@@ -226,7 +223,7 @@ module.exports = class AlarmSetCommand extends Command {
             Timezone    : ${tz}
             Is available: ${this.main.client.guilds.get(guildId).available}
           `)
-          runAlarm(alarmInstance, this.main.client.guilds.get(guildId))
+          runAlarm(alarmInstance, this.main.client.guilds.get(guildId), this.nobuFile)
         })
       })        
     }   
