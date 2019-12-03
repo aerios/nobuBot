@@ -2,16 +2,21 @@ const fs = require('fs');
 const snek = require('snekfetch');
 const Constants = require('./const');
 const Canvas = require('canvas');
+const crypto = require('crypto')
+const bigUintFormat = require('biguint-format')
 
 module.exports = class Util {
   constructor(main) {
     this.main = main;
   }
+  cryptoRandom() {
+    return Math.round(bigUintFormat(crypto.randomBytes(4), 'dec') / Math.pow(2, 32));  
+  }
   rand(min, max) {
     max = max || 1;
     min = min || 0;
     if (max < min) return false;
-    return Math.round((Math.random() * (max - min)) + min);
+    return Math.round((this.cryptoRandom() * (max - min)) + min);
   }
   ARand(array) {
     if (array.length == 1) return array[0];
@@ -122,7 +127,7 @@ module.exports = class Util {
   }
   fgoGacha() {
     return new Promise((resolve, reject) => { 
-      let chance = Math.random() * 100;
+      let chance = this.cryptoRandom() * 100;
       let rate = Constants.rate.fgo;
       if (chance <= rate[0]) chance = "5";
       else if (chance <= rate[1]) chance = "4";

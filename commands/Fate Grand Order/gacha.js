@@ -22,7 +22,7 @@ module.exports = class GachaCommand extends Command {
     this.cooldown[id] = 0;
   }
   getCard(data, rate) {
-    let dice = Math.random() * 100;
+    let dice = this.main.util.rand(0, 100);
     let item = "";
     if (dice <= rate["s5"])      item = 'S/'  + this.main.util.ARand(data.servants["5"]); 
     else if (dice <= rate["s4"]) item = 'S/'  + this.main.util.ARand(data.servants["4"]);

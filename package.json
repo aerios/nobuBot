@@ -11,6 +11,7 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "biguint-format": "^1.0.1",
     "canvas": "^1.6.10",
     "discord.js": "11.1.0",
     "ejs": "^2.5.7",
