@@ -44,8 +44,7 @@ module.exports = class GachaCommand extends Command {
           ctx.drawImage(card, ...pos);
           if (item.length == 5) item += " ";
           resolve(item);
-        }
-	console.log(item, r.body)      
+        }      
         card.src = r.body;
       });
     });

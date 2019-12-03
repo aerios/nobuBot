@@ -10,7 +10,7 @@ module.exports = class Util {
     this.main = main;
   }
   cryptoRandom() {
-    return Math.round(bigUintFormat(crypto.randomBytes(4), 'dec') / Math.pow(2, 32));  
+    return (bigUintFormat(crypto.randomBytes(4), 'dec') / Math.pow(2, 32));  
   }
   rand(min, max) {
     max = max || 1;
