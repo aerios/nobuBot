@@ -3,6 +3,9 @@ const Command = require('../../main/command');
 const Constants = require('../../main/const');
 const moment = require('moment')
 const Arguments = require("../../commons/Arguments")
+const fs = require('fs')
+
+
 
 function getTimezoneOffset(name) {
   if(name == 'pst') return -8 * 60
@@ -69,10 +72,11 @@ Alarm.deserialize = (obj) => {
 }
 
 class AlarmWithChannel {
-  constructor(alarm, activeChannel) {
+  constructor(alarm, activeChannel, nobuBuffer) {
     this.alarm = alarm
     this.channel = activeChannel   
     this.timeoutId = -1 
+    this.nobuBuffer = nobuBuffer
   }
 
   stop() {
@@ -99,7 +103,7 @@ class AlarmWithChannel {
     this.timeoutId = setTimeout(() => {
       this.channel.send(`Uwahahahahaha !!!\nWhat a Splendid Day for Chaldea ! It’s time to do head counts\nWhat!! You didn’t log in ${this.alarm.server} server yet ?!\nHey Retainer what are you waiting for? Iku zo! washi ni tsudzuke ~ei!\n@everyone`, {
         file: {
-          attachment: 'https://i.imgur.com/zMdqYHdh.jpg',
+          attachment: this.nobuBuffer,
           name: 'nobu.png'
         }
       })
@@ -111,10 +115,10 @@ class AlarmWithChannel {
 
 const AlarmBucket = {}
 
-function runAlarm(alarm, guild) {
+function runAlarm(alarm, guild, nobuBuffer) {
   const key = alarm.toString()
   const selectedChannel = guild.channels.get(alarm.channelId)
-  const alarmWithChannel = new AlarmWithChannel(alarm, selectedChannel)
+  const alarmWithChannel = new AlarmWithChannel(alarm, selectedChannel, nobuBuffer)
   if(AlarmBucket[key]) {
     //stop alarm
     AlarmBucket[key].stop()
@@ -150,16 +154,20 @@ module.exports = class AlarmSetCommand extends Command {
     })
     this.arguments = new Arguments(/((?:server)|(?:hour)|(?:tz)) ?: ?[^\|]+/gi)
     setTimeout(() => {
-      this.main.db.get(alarmSuperKey).then(json => {
-        if(json) {
-          json = JSON.parse(json)
-          Object.keys(json).forEach(name => {
-            const instance = Alarm.deserialize(json[name])
-            console.log("Begin running saved alarms!")
-            runAlarm(instance, this.main.client.guilds.get(instance.guildId))
-          })
-        }  
-      })
+      fs.readFile(this.main.config.nobuPath, (err, buffer) => {
+        if(err) console.log('Error loading nobu path!', err)
+        else this.nobuFile = buffer
+        this.main.db.get(alarmSuperKey).then(json => {
+          if(json) {
+            json = JSON.parse(json)
+            Object.keys(json).forEach(name => {
+              const instance = Alarm.deserialize(json[name])
+              console.log("Begin running saved alarms!")
+              runAlarm(instance, this.main.client.guilds.get(instance.guildId), buffer)
+            })
+          }  
+        })
+      })      
     }, 10000)
     
   }

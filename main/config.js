@@ -7,5 +7,6 @@ module.exports = class Config {
     this.ownerID = option.ownerID || "184369428002111488";
     this.token = option.botToken || process.env.token;
     this.dbURL = option.dbURL || process.env.dbURL;
+    this.nobuPath = option.nobuPath || process.env.nobuPath
   }
 }
