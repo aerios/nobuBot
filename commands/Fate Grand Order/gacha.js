@@ -37,7 +37,12 @@ module.exports = class GachaCommand extends Command {
       rate = rate || Constants.rate.gacha.Rest;
       let card = new Canvas.Image();
       let item = this.getCard(data, rate);
-	    
+      console.log(`
+      Roll 1 result!
+      Result: ${item}
+      Data  : ${JSON.stringify(data)}
+      Rate  : ${JSON.stringify(rate)}
+      `)
       snek.get(`${Constants.db}images/${item}.png`).then(r => {
         card.onerror = reject;
         card.onload = () => {
