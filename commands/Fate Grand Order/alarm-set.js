@@ -163,6 +163,7 @@ module.exports = class AlarmSetCommand extends Command {
       fs.readFile(this.main.config.nobuPath, (err, buffer) => {
         if(err) console.log('Error loading nobu path!', err)
         else this.nobuFile = buffer
+        console.log('Nobu Buffer', buffer)
         this.main.db.get(alarmSuperKey).then(json => {
           if(json) {
             json = JSON.parse(json)
@@ -200,7 +201,7 @@ module.exports = class AlarmSetCommand extends Command {
       hour = (hourOfn5s + (hourFraction) + (offset / 60))
     }
     else if(isNaN(parseInt(hour, 10))) { errMessage = `${hour} is not a valid number!`}
-    else if(hour < 0 || hour > 23) { errMessage = `${hour} must be between 0 and 23!`}
+    else if(hour < 0 || hour > 24) { errMessage = `${hour} must be between 0 and 23!`}
     else errMessage = ''
     if(errMessage) {
       message.channel.send(`Error: ${errMessage}`)    
