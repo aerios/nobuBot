@@ -83,6 +83,7 @@ class AlarmWithChannel {
     this.channel = activeChannel   
     this.timeoutId = -1 
     this.nobuBuffer = nobuBuffer
+    console.log('Received nobu buffer', this.nobuBuffer)
   }
 
   stop() {
@@ -97,15 +98,17 @@ class AlarmWithChannel {
     
     const nextTimeout = this.alarm.nextAlarmOffset()
     console.log(`
-      Next alarm set!
-      server      : ${this.alarm.server} 
-      timezone    : ${this.alarm.timezone} 
-      Guild Id    : ${this.alarm.guildId}
-      Channel Id  : ${this.alarm.channelId}
-      Guild name  : ${this.channel.guild.name}
-      Channel name: ${this.channel.name}
-      Next alarm  : ${nextTimeout / 60} minutes!`)  
-
+    Next alarm set!
+    server      : ${this.alarm.server} 
+    timezone    : ${this.alarm.timezone} 
+    Guild Id    : ${this.alarm.guildId}
+    Channel Id  : ${this.alarm.channelId}
+    Guild name  : ${this.channel.guild.name}
+    Channel name: ${this.channel.name}
+    Next alarm  : ${nextTimeout / 60} minutes!
+    Buffer      : ${this.nobuBuffer}
+    `
+    )  
     this.timeoutId = setTimeout(() => {
       this.channel.send(`Uwahahahahaha !!!\nWhat a Splendid Day for Chaldea ! It’s time to do head counts\nWhat!! You didn’t log in ${this.alarm.server} server yet ?!\nHey Retainer what are you waiting for? Iku zo! washi ni tsudzuke ~ei!\n@everyone`, {
         file: {
