@@ -46,7 +46,13 @@ class Alarm {
     const nextAlarm = now.clone().startOf('day').add(hour, 'h')
     const delta = nextAlarm.unix() - now.unix()
     let nextTimeout = 0
-    
+    console.log(`
+    Offset  : ${timezoneOffset}  
+    Now     : ${now}
+    Hour    : ${hour}
+    Next    : ${nextAlarm}
+    Delta   : ${delta}
+    `)
     if(delta < 0) {
       //we are past today's alarm. move to tomorrow    
       nextTimeout = 24 * 60 * 60 - delta
